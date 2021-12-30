@@ -1,0 +1,30 @@
+name: Integration
+
+on:
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    types:
+      - completed
+  workflow_dispatch:
+
+concurrency:
+  ci_integration
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - shell: bash
+        env:
+          NR_ACCOUNT: ${{ secrets.NR_ACCOUNT }}
+          NR_KEY: ${{ secrets.NR_KEY }}
+          NR_II_KEY: ${{ secrets.NR_II_KEY }}
+        run: |
+          node scripts/status.js
