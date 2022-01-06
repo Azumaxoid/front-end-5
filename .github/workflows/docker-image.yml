@@ -42,3 +42,7 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         args: -n sock-shop-nr rollout restart deploy front-end-5
+    - name: Deploy marking
+      env:
+        NEW_RELIC_API_KEY: ${{ secrets.NR_KEY }}
+      run: curl -X POST "https://api.newrelic.com/v2/applications/999435331/deployments.json" -H "Api-Key:$NEW_RELIC_API_KEY" -H "Content-Type:application/json" -d '{"deployment":{"revision":"'`git rev-parse HEAD`'","user":"Auto Deploy","timestamp":"'`date +'%Y-%m-%dT%H:%M:%S'Z`'"}}'
