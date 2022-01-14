@@ -23,13 +23,15 @@
   });
 
   app.get("/catalogue*", function (req, res, next) {
-    logger.info("Request" + req.url.toString());
-    logger.info(JSON.stringify(req.query));
-    var tags = req.query['tags'] ? req.query['tags'].split(',').map(tag=>`tags[]=${tag}`).join('&') : '';
-    var params = Object.keys(req.query).filter(attr => attr !== 'tags').map(attr => `${attr}=${req.query[attr]}`).join('&');
-    var path = `${req.path}?${params}&${tags}`;
-    logger.info(path);
-    helpers.simpleHttpRequest(endpoints.catalogueUrl + path, res, next);
+    // バグが多いためブラウザからのリクエストをそのまま流す
+    //logger.info("Request" + req.url.toString());
+    //logger.info(JSON.stringify(req.query));
+    //var tags = req.query['tags'] ? req.query['tags'].split(',').map(tag=>`tags[]=${tag}`).join('&') : '';
+    //var params = Object.keys(req.query).filter(attr => attr !== 'tags').map(attr => `${attr}=${req.query[attr]}`).join('&');
+    //var path = `${req.path}?${params}&${tags}`;
+    //logger.info(path);
+    //helpers.simpleHttpRequest(endpoints.catalogueUrl + path, res, next);
+    helpers.simpleHttpRequest(endpoints.catalogueUrl + req.url.toString(), res, next);
   });
 
   app.get("/tags", function(req, res, next) {
